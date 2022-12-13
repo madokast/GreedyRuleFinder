@@ -3,13 +3,10 @@
 '''
 
 from typing import Dict, List, Tuple
-import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-from sklearn import datasets
 from sklearn.preprocessing import LabelEncoder
 from sklearn import tree
-import sys, os
+import sys
 
 data = pd.read_csv("testdata/relation.csv", dtype=str)
 print('origin table\n', data)
@@ -30,13 +27,13 @@ if False:
     print('test decode\n', data)
     sys.exit(0)
 
-# decision-tree for
+# decision-tree
 all_cols = data.columns
-featrues, target = list(all_cols[:-1]), str(all_cols[-1])
-print(f"featrues = {featrues}, targert = {target}")
+features, target = list(all_cols[:-1]), str(all_cols[-1])
+print(f"features = {features}, targert = {target}")
 dt = tree.DecisionTreeClassifier(max_depth=10)
-dt.fit(data[featrues], data[target])
-dt_text = tree.export_text(dt, feature_names = featrues)
+dt.fit(data[features], data[target])
+dt_text = tree.export_text(dt, feature_names = features)
 print("dt text", dt_text, sep='\n')
 
 # convert dt_text to REE
