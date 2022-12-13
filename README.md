@@ -19,6 +19,6 @@ def deep_search(tab, xs, y):
       # add a new structural predicate into xs and go on
       for next_sp in sp_set:
         xs.push(next_p)
-        deep_search(tab, xs, y)
+        deep_search(remain_tab, xs, y)
         xs.pop()
 ```
