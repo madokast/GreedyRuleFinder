@@ -1,22 +1,22 @@
 # GreedyRuleFinder
-王博士提出新规则发现算法，本文中我称之为贪心规则发现。基本算法是决策树+结构谓词。
+A new greedy rule-digging algorithm leveraging decision-tree and recursion, proposed by Ph.D Wang.
 
-## 基本算法
+## Pseudocode
 ```python
-for sp in sp_set: # 所有结构谓词
+for sp in sp_set: # Structural predicates
   deep_search(tab, xs = [], y = sp)
 
-# 递归
+# recursion
 def deep_search(tab, xs, y):
-  if rule(xs, y, tab): # 如果 xs -> y 成立，输出，退出迭代
+  if rule(xs, y, tab): # exit recursion if rule xs -> y ok.
     output((xs, y))
     return
   else:
-    remain_tab, rules = decision_tree(tab, xs, y) # 决策树进行规则发现，返回规则和规则涉及不到的元组
-    output(rules) # 输出规则
-    
-    if not terminate(remain_tab): # 表长度足够挖出覆盖率达标的规则
-      # xs 中加入新结构谓词
+    remain_tab, rules = decision_tree(tab, xs, y) # find rules "xs ^ Constant predicates -> y"
+    output(rules)
+
+    if not terminate(remain_tab): # If the length of remaining table is enough to find ok rule.
+      # add a new structural predicate into xs and go on
       for next_sp in sp_set:
         xs.push(next_p)
         deep_search(tab, xs, y)
