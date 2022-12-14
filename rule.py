@@ -1,5 +1,6 @@
 from typing import List, Set
 import pandas as pd
+from tqdm import tqdm
 import sqlite3
 import os 
 import time
@@ -16,7 +17,9 @@ class Predicate:
         self.t1_col = t1_col
         self.operator = operator
         self.constant = constant
-        self._columns = set([t0_col]) if t1_col is None else set([t0_col, t1_col])
+        self.columns = set([t0_col]) if t1_col is None else set([t0_col, t1_col])
+        # new creating predicates are not negative
+        self.negative = False
     
     @staticmethod
     def newConst0(col:str, constant:str, operator:str = '=')->'Predicate':
@@ -34,23 +37,27 @@ class Predicate:
     
     def isConst(self)->bool:
         return self.constant is not None
-
-    def columns(self)->Set[str]:
-        return self._columns
     
     def copy(self)->'Predicate':
         return copy.deepcopy(self)
     
     def negate(self)->'Predicate':
+        if self.negative:
+            raise Exception("Double negation on " + str(self))
+
         def negateOp(op:str)->str:
             if op == '=':
                 return '<>'
             else:
-                raise ValueError('NoImpl ' + op)
+                raise Exception('NoImpl ' + op)
 
         p = self.copy()
         p.operator = negateOp(p.operator)
+        p.negative = True
         return p
+
+    def compatible(self, another:'Predicate')->bool:
+        return len(self.columns & another.columns) == 0
     
     def __str__(self) -> str:
         return self.__repr__()
@@ -68,9 +75,8 @@ class Predicate:
         return self.__repr__()
 
 class Rule:
-    def __init__(self, andXs:List[Predicate] = [], orXs:List[Predicate] = [], y:Predicate = None, sameTable:bool = True, rowSize:int = 0, xSupp:int = 0, supp:int = 0) -> None:
-        self.andXs = andXs
-        self.orXs = orXs
+    def __init__(self, Xs:List[Predicate] = [], y:Predicate = None, sameTable:bool = True, rowSize:int = 0, xSupp:int = 0, supp:int = 0) -> None:
+        self.Xs = Xs
         self.y = y
         self.sameTable = sameTable
         self.rowSize = rowSize
@@ -80,15 +86,27 @@ class Rule:
     def copy(self)->'Rule':
         return copy.deepcopy(self)
 
+    def allPredicates(self)->List[Predicate]:
+        ps = []
+        ps.extend(self.Xs)
+        ps.append(self.y)
+        return ps
+
+    def columns(self)->Set[str]:
+        s = set()
+        for p in self.allPredicates():
+            for c in p.columns:
+                s.add(c)
+        return s
+    
+    def compatible(self, predicate:Predicate)->bool:
+        return len(self.columns() & predicate.columns) == 0
+
     def singleLine(self)->bool:
-        for x in self.andXs:
-            if not x.isConst():
+        for p in self.allPredicates():
+            if not p.isConst():
                 return False
-        for x in self.orXs:
-            if not x.isConst():
-                return False
-        
-        return self.y.isConst()
+        return True
 
     def rowSizeSQL(self)->str:
         if self.singleLine():
@@ -101,21 +119,27 @@ class Rule:
     
     def xSuppSQL(self)->str:
         sql = f"SELECT count(*) FROM {SQL_TAB0} AS t0"
-        andWheres = [p.sql() for p in self.andXs]
-        orWheres = [p.sql() for p in self.orXs]
+        wheres = [p.sql() for p in self.Xs]
 
         if not self.singleLine():
             sql += f", {SQL_TAB1} AS t1"
             if self.sameTable:
-                andWheres.append(f"t0.{SQL_ID_COL} <> t1.{SQL_ID_COL}")
+                wheres.append(f"t0.{SQL_ID_COL} <> t1.{SQL_ID_COL}")
 
-        assert len(andWheres) > 0 
-        andWhere = " AND ".join(andWheres)
-        orWhere = " OR ".join(orWheres)
-        if len(orWheres) > 0:
-            orWhere = " OR ".join(orWheres)
-            andWhere += f" AND ({orWhere})" 
-        return sql + " WHERE " + andWhere
+        where = " AND ".join(wheres)
+        return sql + " WHERE " + where
+    
+    def cover(self)->float:
+        return 0. if self.rowSize == 0 else self.supp/self.rowSize
+    
+    def confidence(self)->float:
+        return 0. if self.xSupp == 0 else self.supp/self.xSupp
+
+    def ok(self, cover:float = 0.1, confidence:float = 0.8)->bool:
+        return self.cover() >= cover and self.confidence() >= confidence
+    
+    def fertile(self, cover:float = 0.1)->bool:
+        return self.cover() >= cover
 
     def suppSQL(self)->str:
         return self.xSuppSQL() + " AND " + self.y.sql()
@@ -124,23 +148,17 @@ class Rule:
         return self.__repr__()
 
     def __repr__(self) -> str:
-        andX = " ^ ".join((str(p) for p in self.andXs))
-        orX = " | ".join((str(p) for p in self.orXs))
-        if len(self.orXs) > 0:
-            orX = "(" + orX + ")"
-        cover = round(self.supp/self.rowSize, 2)
-        conf = round(self.supp/self.xSupp, 2)
-
-        if len(orX) > 0:
-            orX += " ^ " 
-        return f"{orX}{andX} -> {self.y}, rowSize={self.rowSize}, xSupp={self.xSupp}, supp={self.supp}, covre={cover}, conf={conf}"
+        xs = " ^ ".join((str(p) for p in self.Xs))
+        cover = round(self.cover(), 2)
+        conf = round(self.confidence(), 2)
+        return f"{xs} -> {self.y}, rowSize={self.rowSize}, xSupp={self.xSupp}, supp={self.supp}, covre={cover}, conf={conf}"
 
 def _rm(file:str):
     if os.path.exists(file):
         time.sleep(1e-10)
         os.remove(file)
 
-def ruleCheck(rules:List[Rule], t0:pd.DataFrame, t1:pd.DataFrame = None):
+def ruleRun(rules:List[Rule], t0:pd.DataFrame, t1:pd.DataFrame = None):
     t0 = copy.deepcopy(t0)
     t0[SQL_ID_COL] = range(len(t0))
     
@@ -156,7 +174,8 @@ def ruleCheck(rules:List[Rule], t0:pd.DataFrame, t1:pd.DataFrame = None):
     try:
         t0.to_sql(SQL_TAB0, conn)
         t1.to_sql(SQL_TAB1, conn)
-        for rule in rules:
+        for rule in (rules if len(rules) < 2 else tqdm(rules, desc = "Executing")):
+            # print(rule, rule.rowSizeSQL(), rule.xSuppSQL(), rule.suppSQL(), sep = '\n')
             rule.rowSize = conn.execute(rule.rowSizeSQL()).fetchone()[0]
             rule.xSupp = conn.execute(rule.xSuppSQL()).fetchone()[0]
             rule.supp = conn.execute(rule.suppSQL()).fetchone()[0]
@@ -167,15 +186,14 @@ def ruleCheck(rules:List[Rule], t0:pd.DataFrame, t1:pd.DataFrame = None):
     
 
 
-
 if __name__ == '__main__':
     data = pd.read_csv("testdata/relation.csv", dtype=str)
     print(data)
-    rule1 = Rule(andXs = [Predicate.newConst0("pn", "2222222"), Predicate.newConst0("ac", "908", "<>"), Predicate.newConst0("ct", "EDI", "<>")], 
+    rule1 = Rule(Xs = [Predicate.newConst0("pn", "2222222"), Predicate.newConst0("ac", "908", "<>"), Predicate.newConst0("ct", "EDI", "<>")], 
         y = Predicate.newConst0("cc", "01"))
-    rule2 = Rule(andXs = [Predicate.newStruct("cc")], y = Predicate.newStruct("ac"))
+    rule2 = Rule(Xs = [Predicate.newStruct("cc")], y = Predicate.newStruct("ac"))
     print(rule1.suppSQL())
     print(rule2.suppSQL())
-    ruleCheck([rule1, rule2], data)
+    ruleRun([rule1, rule2], data)
     print(rule1)
     print(rule2)
