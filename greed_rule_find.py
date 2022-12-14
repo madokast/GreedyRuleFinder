@@ -1,5 +1,5 @@
 from typing import Dict, List, Set, Tuple
-from rule import Predicate, Rule, ruleRun
+from rule import Predicate, Rule, RuleExecutor
 import pandas as pd
 from utils import countByValue
 
@@ -34,7 +34,7 @@ def first_generation(structual_predicates:List[Predicate])->List[Rule]:
                 rules.append(Rule(Xs = [x], y = y))
     return rules
 
-def next_generation(fathers:List[Rule], resultRules:List[Rule], structual_predicates:List[Predicate], constant_predicates:List[Tuple[Predicate]])->List[Rule]:
+def next_generation(fathers:List[Rule], resultRules:List[Rule], structual_predicates:List[Predicate], constant_predicates:List[Tuple[Predicate]], re:RuleExecutor, cover:float)->List[Rule]:
     # all negetive predicates of a y
     negetive_predicates_map:Dict[Y, Dict[PredKey, NegPred]] = {}
     negetive_columns_map:Dict[Y, Set[str]] = {}
@@ -48,9 +48,20 @@ def next_generation(fathers:List[Rule], resultRules:List[Rule], structual_predic
                 negetive_columns.add(c)
         negetive_predicates_map[rule.y] = negetive_predicates_set
         negetive_columns_map[rule.y] = negetive_columns
+    
+    no_create_children_Y:Set[Y] = set()
+    for y, neg_preds in negetive_predicates_map.items():
+        negetive_predicates = list(neg_preds.values())
+        rule_proxy = Rule(Xs = negetive_predicates, y = y)
+        re.execute([rule_proxy])
+        if rule_proxy.cover() < cover:
+            no_create_children_Y.add(y)
+
 
     children:List[Rule] = []
     for father in fathers:
+        if father.y in no_create_children_Y:
+            continue
         negetive_predicates:List[Predicate] = list(negetive_predicates_map.get(father.y, {}).values())
         negetive_columns = negetive_columns_map.get(father.y, set())
         for sp in structual_predicates:
@@ -61,36 +72,22 @@ def next_generation(fathers:List[Rule], resultRules:List[Rule], structual_predic
                 children.append(Rule(Xs = negetive_predicates + father.Xs + list(cp), y = father.y))
     return children
 
-def remaining_row_size(table:pd.DataFrame, found_rules:List[Rule], singleLine:bool):
-    row_size = 0
-    if singleLine:
-        row_size = len(table)
-    else:
-        if found_rules[0].sameTable:
-            row_size = len(table) * (len(table) - 1)
-        else:
-            row_size = len(table) * len(table)
-    all_negetive_predicates:Set[Predicate] = set()
-    for rule in found_rules:
-        for p in rule.Xs:
-            if p.negative:
-                all_negetive_predicates.add(p)
-    rule_proxy = Rule(Xs = list(all_constant_predicates))
-    ruleRun([rule_proxy], table, table)
-    return row_size - rule_proxy.xSupp
-
 if __name__ == '__main__':
     cover, confidence = 0.001, 1.0
     data = pd.read_csv("testdata/relation.csv", dtype=str)
-    print(data)
+    re = RuleExecutor(data)
+    print(f"Table length {len(data)} with {len(data.columns)} columns {data.columns}")
 
     sps = all_structual_predicates(data)
+    print(f"Create {len(sps)} structual predicates. Such as {sps[:3]}")
     cps = all_constant_predicates(data, singleLine=False)
+    print(f"Create {len(cps) * len(cps[0])} constant predicates. Such as {cps[:3]}")
     rules = first_generation(sps)
 
     result = []
-    while True:
-        ruleRun(rules, data)
+    for i in range(20):
+        print(f"Level-wise {i}")
+        re.execute(rules)
         fathers = []
         for rule in rules:
             if rule.ok(cover, confidence):
@@ -99,7 +96,7 @@ if __name__ == '__main__':
                 fathers.append(rule)
         if len(fathers) == 0:
             break
-        rules = next_generation(fathers, result, sps, cps)
+        rules = next_generation(fathers, result, sps, cps, re, cover)
 
     for rule in result:
         print(rule)
