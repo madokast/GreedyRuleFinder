@@ -153,37 +153,57 @@ class Rule:
         conf = round(self.confidence(), 2)
         return f"{xs} -> {self.y}, rowSize={self.rowSize}, xSupp={self.xSupp}, supp={self.supp}, covre={cover}, conf={conf}"
 
-def _rm(file:str):
-    if os.path.exists(file):
-        time.sleep(1e-10)
-        os.remove(file)
+class RuleExecutor:
+    def __init__(self, t0:pd.DataFrame, t1:pd.DataFrame = None) -> None:
+        t0 = copy.deepcopy(t0)
+        t0[SQL_ID_COL] = range(len(t0))
 
-def ruleRun(rules:List[Rule], t0:pd.DataFrame, t1:pd.DataFrame = None):
-    t0 = copy.deepcopy(t0)
-    t0[SQL_ID_COL] = range(len(t0))
-    
-    sameTable = t1 is None
-    if sameTable:
-        t1 = t0
-    else:
-        t1 = copy.deepcopy(t1)
-        t1[SQL_ID_COL] = range(len(t1))
-    
-    _rm(SQLITE3_TEMP_FILE)
-    conn:sqlite3.Connection = sqlite3.connect(SQLITE3_TEMP_FILE)
-    try:
+        sameTable = t1 is None
+        if sameTable:
+            t1 = t0
+        else:
+            t1 = copy.deepcopy(t1)
+            t1[SQL_ID_COL] = range(len(t1))
+
+        RuleExecutor._rm(SQLITE3_TEMP_FILE)
+        conn:sqlite3.Connection = sqlite3.connect(SQLITE3_TEMP_FILE)
         t0.to_sql(SQL_TAB0, conn)
         t1.to_sql(SQL_TAB1, conn)
+
+        self.conn = conn
+        self.t0_len = len(t0)
+        self.t1_len = len(t1)
+    
+    def predicatesSuppport(self, predicates:List[Predicate], sameTable:bool)->int:
+        assert len(predicates) > 0
+        rule_proxy = Rule(Xs = predicates, sameTable = sameTable)
+        return self.conn.execute(rule_proxy.xSuppSQL()).fetchone()[0]
+
+    def execute(self, rules:List[Rule]):
         for rule in (rules if len(rules) < 2 else tqdm(rules, desc = "Executing")):
             # print(rule, rule.rowSizeSQL(), rule.xSuppSQL(), rule.suppSQL(), sep = '\n')
-            rule.rowSize = conn.execute(rule.rowSizeSQL()).fetchone()[0]
-            rule.xSupp = conn.execute(rule.xSuppSQL()).fetchone()[0]
-            rule.supp = conn.execute(rule.suppSQL()).fetchone()[0]
-    finally:
-        conn.close()
-        _rm(SQLITE3_TEMP_FILE)
+            # rule.rowSize = self.conn.execute(rule.rowSizeSQL()).fetchone()[0]
+            rule.xSupp = self.conn.execute(rule.xSuppSQL()).fetchone()[0]
+            rule.supp = self.conn.execute(rule.suppSQL()).fetchone()[0]
 
+            if rule.singleLine():
+                rule.rowSize = self.t0_len
+            else:
+                if rule.sameTable:
+                    rule.rowSize = self.t0_len * (self.t0_len - 1)
+                else:
+                    rule.rowSize = self.t0_len * self.t1_len
     
+    def __del__(self):
+        self.conn.close()
+        RuleExecutor._rm(SQLITE3_TEMP_FILE)
+    
+
+    @staticmethod
+    def _rm(file:str):
+        if os.path.exists(file):
+            time.sleep(1e-10)
+            os.remove(file)
 
 
 if __name__ == '__main__':
@@ -194,6 +214,6 @@ if __name__ == '__main__':
     rule2 = Rule(Xs = [Predicate.newStruct("cc")], y = Predicate.newStruct("ac"))
     print(rule1.suppSQL())
     print(rule2.suppSQL())
-    ruleRun([rule1, rule2], data)
+    RuleExecutor(data).execute([rule1, rule2])
     print(rule1)
     print(rule2)
