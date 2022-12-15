@@ -1,4 +1,4 @@
-from typing import List, Set
+from typing import List, Optional, Set
 import pandas as pd
 from tqdm import tqdm
 import sqlite3
@@ -59,17 +59,17 @@ class Predicate:
     def compatible(self, another:'Predicate')->bool:
         return len(self.columns & another.columns) == 0
     
-    def __str__(self) -> str:
-        return self.__repr__()
+    def __str__(self, right_tuple_id:int = 1) -> str:
+        return self.__repr__(right_tuple_id)
     
-    def __repr__(self) -> str:
+    def __repr__(self, right_tuple_id:int = 1) -> str:
         if self.constant is None:
-            return f"t0.{self.t0_col} {self.operator} t1.{self.t1_col}"
+            return f"t0.{self.t0_col} {self.operator} t{right_tuple_id}.{self.t1_col}"
         else:
             if self.t1_col is None:
                 return f"t0.{self.t0_col} {self.operator} '{self.constant}'"
             else:
-                return f"t1.{self.t1_col} {self.operator} '{self.constant}'"
+                return f"t{right_tuple_id}.{self.t1_col} {self.operator} '{self.constant}'"
 
     def sql(self)->str:
         return self.__repr__()
@@ -145,14 +145,24 @@ class Rule:
     def suppSQL(self)->str:
         return self.xSuppSQL() + " AND " + self.y.sql()
     
-    def __str__(self) -> str:
-        return self.__repr__()
+    def __str__(self, right_tuple_id:int = 1) -> str:
+        return self.__repr__(right_tuple_id)
 
-    def __repr__(self) -> str:
-        xs = " ^ ".join((str(p) for p in self.Xs))
+    def __repr__(self, right_tuple_id:int = 1) -> str:
+        xs = " ^ ".join((p.__str__(right_tuple_id) for p in self.Xs))
         cover = round(self.cover(), 2)
         conf = round(self.confidence(), 2)
-        return f"{xs} -> {self.y}, rowSize={self.rowSize}, xSupp={self.xSupp}, supp={self.supp}, covre={cover}, conf={conf}"
+        return f"{xs} -> {self.y.__str__(right_tuple_id)}, rowSize={self.rowSize}, xSupp={self.xSupp}, supp={self.supp}, covre={cover}, conf={conf}"
+
+    def ree(self, t0_tab:str, t1_tab:Optional[str] = None)->str:
+        if t1_tab is None:
+            t1_tab = t0_tab
+        
+        if self.singleLine():
+            return f"{t0_tab}(t0) ^ {self}"
+        else:
+            right_tuple_id = 1 if t0_tab == t1_tab else 2
+            return f"{t0_tab}(t0) ^ {t1_tab}(t{right_tuple_id}) ^ {self.__str__(right_tuple_id)}"
 
 class RuleExecutor:
     def __init__(self, t0:pd.DataFrame, t1:pd.DataFrame = None) -> None:
@@ -221,3 +231,6 @@ if __name__ == '__main__':
     RuleExecutor(data).execute([rule1, rule2])
     print(rule1)
     print(rule2)
+
+    print(rule2.ree("r1", "r1"))
+    print(rule2.ree("r1", "r2"))

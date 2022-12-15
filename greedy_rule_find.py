@@ -75,7 +75,7 @@ def next_generation(fathers:List[Rule], resultRules:List[Rule], structual_predic
     return children
 
 if __name__ == '__main__':
-    cover, confidence = 0.01, 1.0
+    cover, confidence = 0.01, 0.5
     data = pd.read_csv(r"testdata/relation.csv", dtype=str)
     print(f"Table length {len(data)} with {len(data.columns)} columns {list(data.columns)}")
     re = RuleExecutor(data)
