@@ -75,13 +75,14 @@ class Predicate:
         return self.__repr__()
 
 class Rule:
-    def __init__(self, Xs:List[Predicate] = [], y:Predicate = None, sameTable:bool = True, rowSize:int = 0, xSupp:int = 0, supp:int = 0) -> None:
+    def __init__(self, Xs:List[Predicate] = [], y:Predicate = None, sameTable:bool = True, rowSize:int = 0, xSupp:int = 0, supp:int = 0, generation:int = 1) -> None:
         self.Xs = Xs
         self.y = y
         self.sameTable = sameTable
         self.rowSize = rowSize
         self.xSupp = xSupp
         self.supp = supp
+        self.generation = generation
 
     def copy(self)->'Rule':
         return copy.deepcopy(self)
@@ -173,6 +174,8 @@ class RuleExecutor:
         self.conn = conn
         self.t0_len = len(t0)
         self.t1_len = len(t1)
+
+        print("Rule executor initing")
     
     def predicatesSuppport(self, predicates:List[Predicate], sameTable:bool)->int:
         assert len(predicates) > 0
@@ -181,7 +184,7 @@ class RuleExecutor:
 
     def execute(self, rules:List[Rule]):
         for rule in (rules if len(rules) < 2 else tqdm(rules, desc = "Executing")):
-            # print(rule, rule.rowSizeSQL(), rule.xSuppSQL(), rule.suppSQL(), sep = '\n')
+            # print(rule, rule.xSuppSQL(), rule.suppSQL(), sep = '\n')
             # rule.rowSize = self.conn.execute(rule.rowSizeSQL()).fetchone()[0]
             rule.xSupp = self.conn.execute(rule.xSuppSQL()).fetchone()[0]
             rule.supp = self.conn.execute(rule.suppSQL()).fetchone()[0]
@@ -193,6 +196,7 @@ class RuleExecutor:
                     rule.rowSize = self.t0_len * (self.t0_len - 1)
                 else:
                     rule.rowSize = self.t0_len * self.t1_len
+            # print(rule)
     
     def __del__(self):
         self.conn.close()
