@@ -1,6 +1,12 @@
 # GreedyRuleFinder
 A new greedy rule-digging algorithm leveraging decision-tree and recursion, proposed by Ph.D Wang.
 
+## Usage
+
+1. install python packages `pip install -r requirement.txt`
+
+2. run greedy_rule_find.py `python greedy_rule_find.py`
+
 ## Pseudocode
 ```python
 for sp in sp_set: # Structural predicates

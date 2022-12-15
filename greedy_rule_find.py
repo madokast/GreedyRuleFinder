@@ -1,7 +1,7 @@
 from typing import Dict, List, Set, Tuple
 from rule import Predicate, Rule, RuleExecutor
 import pandas as pd
-from utils import countByValue
+from utils import countByValue, foreach, groupByKey
 
 Y = Predicate
 PredKey = str
@@ -57,7 +57,7 @@ def next_generation(fathers:List[Rule], resultRules:List[Rule], structual_predic
         if rule_proxy.cover() < cover:
             no_create_children_Y.add(y)
 
-
+    generation = fathers[0].generation + 1
     children:List[Rule] = []
     for father in fathers:
         if father.y in no_create_children_Y:
@@ -66,17 +66,19 @@ def next_generation(fathers:List[Rule], resultRules:List[Rule], structual_predic
         negetive_columns = negetive_columns_map.get(father.y, set())
         for sp in structual_predicates:
             if father.compatible(sp) and len(negetive_columns & sp.columns) == 0:
-                children.append(Rule(Xs = negetive_predicates + father.Xs + [sp], y = father.y))
+                children.append(Rule(Xs = negetive_predicates + father.Xs + [sp], y = father.y, generation = generation))
         for cp in constant_predicates:
             if father.compatible(cp[0]) and len(negetive_columns & cp[0].columns) == 0:
-                children.append(Rule(Xs = negetive_predicates + father.Xs + list(cp), y = father.y))
+                children.append(Rule(Xs = negetive_predicates + father.Xs + list(cp), y = father.y, generation = generation))
+    
+    
     return children
 
 if __name__ == '__main__':
-    cover, confidence = 0.001, 1.0
-    data = pd.read_csv("testdata/relation.csv", dtype=str)
+    cover, confidence = 0.01, 1.0
+    data = pd.read_csv(r"testdata/relation.csv", dtype=str)
+    print(f"Table length {len(data)} with {len(data.columns)} columns {list(data.columns)}")
     re = RuleExecutor(data)
-    print(f"Table length {len(data)} with {len(data.columns)} columns {data.columns}")
 
     sps = all_structual_predicates(data)
     print(f"Create {len(sps)} structual predicates. Such as {sps[:3]}")
@@ -84,9 +86,8 @@ if __name__ == '__main__':
     print(f"Create {len(cps) * len(cps[0])} constant predicates. Such as {cps[:3]}")
     rules = first_generation(sps)
 
-    result = []
-    for i in range(20):
-        print(f"Level-wise {i}")
+    result:List[Rule] = []
+    for _ in range(20):
         re.execute(rules)
         fathers = []
         for rule in rules:
@@ -98,5 +99,8 @@ if __name__ == '__main__':
             break
         rules = next_generation(fathers, result, sps, cps, re, cover)
 
-    for rule in result:
-        print(rule)
+    for rules in groupByKey(result, lambda rule:rule.y).values():
+        if len(rules) > 0:
+            print(f"RHS: {rules[0].y}")
+        for rule in sorted(rules, key = lambda rule:rule.generation):
+            print("|" + "----" * (rule.generation -1) + str(rule))
