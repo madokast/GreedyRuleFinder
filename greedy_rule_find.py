@@ -1,12 +1,7 @@
 from typing import Dict, List, Set, Tuple
-from rule import Predicate, Rule, RuleExecutor
+from rule import Predicate, Rule, RuleExecutor, Y, NegPred
 import pandas as pd
 from utils import countByValue, foreach, groupByKey
-
-Y = Predicate
-PredKey = str
-NegPred = Predicate
-Used = bool
 
 def all_structual_predicates(table:pd.DataFrame, ignore_columns:List[str] = [])->List[Predicate]:
     return [Predicate.newStruct(c) for c in table.columns if c not in ignore_columns]
@@ -35,13 +30,13 @@ def first_generation(structual_predicates:List[Predicate])->List[Rule]:
                 rules.append(Rule(Xs = [x], y = y))
     return rules
 
-def next_generation(previous_generation:List[Rule], new_found_rules:List[Rule], resultRules:List[Rule], 
+def next_generation(fathers:List[Rule], new_found_rules:List[Rule], all_found_rules:List[Rule], 
         structual_predicates:List[Predicate], constant_predicates:List[Tuple[Predicate]], re:RuleExecutor, cover:float)->List[Rule]:
-    # The data of Y has changed ?
-    changed_y:Dict[Y, Used] = {y:False for y in set([rule.y for rule in new_found_rules])}
+    # The data of Y has changed ? Bacause Y appears in the new found rules.
+    changed_Ys:Set[Y] = {rule.y for rule in new_found_rules}
     # all negetive predicates of Y
     negetive_predicates_map:Dict[Y, Set[NegPred]] = {rule:set() for rule in structual_predicates}
-    for y, rules in groupByKey(resultRules, lambda rule:rule.y).items():
+    for y, rules in groupByKey(all_found_rules, lambda rule:rule.y).items():
         foreach(rules, lambda rule:foreach(rule.Xs, lambda x:negetive_predicates_map[y].add(x if x.negative else x.negate())))
     # all columns of all negetive predicates of Y
     negetive_columns_map:Dict[Y, Set[str]] = {rule:set() for rule in structual_predicates}
@@ -49,78 +44,42 @@ def next_generation(previous_generation:List[Rule], new_found_rules:List[Rule], 
         foreach(ps, lambda p:negetive_columns_map[y].update(p.columns))
 
     
-    no_create_children_Y:Set[Y] = set()
+    no_create_children_Ys:Set[Y] = set()
     for y, neg_preds in negetive_predicates_map.items():
         rule_proxy = Rule(Xs = list(neg_preds), y = y)
         re.execute([rule_proxy])
         if rule_proxy.cover() < cover:
-            no_create_children_Y.add(y)
+            no_create_children_Ys.add(y)
     
-    generation = previous_generation[0].generation + 1
+    generation = fathers[0].generation + 1
     children:List[Rule] = []
-    for father in previous_generation:
-        y = father.y
-        if y in no_create_children_Y:
+
+    # Rules about data-changed Y
+    for y in changed_Ys:
+        if y in no_create_children_Ys:
             continue
-        if y in changed_y:
-            if not changed_y[y]:
-                changed_y[y] = True
-                for sp in structual_predicates:
-                    # check compatible
-                    if sp.compatible(y) and len(sp.columns & negetive_columns_map.get(y, set())) == 0:
-                        children.append(Rule(Xs = list(negetive_predicates_map[y]) + [sp], y = y, generation = generation))
-        else:
-            for sp in structual_predicates:
-                if father.compatible(sp):
-                    children.append(Rule(Xs = father.Xs + [sp], y = y, generation = generation))
-            for cp in constant_predicates:
-                if father.compatible(cp[0]):
-                    children.append(Rule(Xs = father.Xs + list(cp), y = y, generation = generation))
+        for sp in structual_predicates:
+            if sp.compatible(y) and len(sp.columns & negetive_columns_map.get(y, set())) == 0:
+                children.append(Rule(Xs = list(negetive_predicates_map[y]) + [sp], y = y, generation = generation))
+
+    # Rules about fathers' children
+    for father in fathers:
+        y = father.y
+        if y in no_create_children_Ys:
+            continue
+        if y in changed_Ys:
+            continue
+        for sp in structual_predicates:
+            if father.compatible(sp):
+                children.append(Rule(Xs = father.Xs + [sp], y = y, generation = generation))
+        for cp in constant_predicates:
+            if father.compatible(cp[0]):
+                children.append(Rule(Xs = father.Xs + list(cp), y = y, generation = generation))
         
     return children
 
-
-# def next_generation(fathers:List[Rule], resultRules:List[Rule], structual_predicates:List[Predicate], constant_predicates:List[Tuple[Predicate]], re:RuleExecutor, cover:float)->List[Rule]:
-#     # all negetive predicates of a y
-#     negetive_predicates_map:Dict[Y, Dict[PredKey, NegPred]] = {}
-#     negetive_columns_map:Dict[Y, Set[str]] = {}
-#     for rule in resultRules:
-#         negetive_predicates_set = negetive_predicates_map.get(rule.y, {})
-#         negetive_columns = negetive_columns_map.get(rule.y, set())
-#         for x in rule.Xs:
-#             neget = x if x.negative else x.negate()
-#             negetive_predicates_set[str(neget)] = neget
-#             for c in neget.columns:
-#                 negetive_columns.add(c)
-#         negetive_predicates_map[rule.y] = negetive_predicates_set
-#         negetive_columns_map[rule.y] = negetive_columns
-    
-#     no_create_children_Y:Set[Y] = set()
-#     for y, neg_preds in negetive_predicates_map.items():
-#         negetive_predicates = list(neg_preds.values())
-#         rule_proxy = Rule(Xs = negetive_predicates, y = y)
-#         re.execute([rule_proxy])
-#         if rule_proxy.cover() < cover:
-#             no_create_children_Y.add(y)
-
-#     generation = fathers[0].generation + 1
-#     children:List[Rule] = []
-#     for father in fathers:
-#         if father.y in no_create_children_Y:
-#             continue
-#         negetive_predicates:List[Predicate] = list(negetive_predicates_map.get(father.y, {}).values())
-#         negetive_columns = negetive_columns_map.get(father.y, set())
-#         for sp in structual_predicates:
-#             if father.compatible(sp) and len(negetive_columns & sp.columns) == 0:
-#                 children.append(Rule(Xs = negetive_predicates + father.Xs + [sp], y = father.y, generation = generation))
-#         for cp in constant_predicates:
-#             if father.compatible(cp[0]) and len(negetive_columns & cp[0].columns) == 0:
-#                 children.append(Rule(Xs = negetive_predicates + father.Xs + list(cp), y = father.y, generation = generation))
-    
-    
-#     return children
-
 if __name__ == '__main__':
+    old_rule_found = False
     cover, confidence = 0.01, 1.0
     data = pd.read_csv(r"testdata/relation.csv", dtype=str)
     print(f"Table length {len(data)} with {len(data.columns)} columns {list(data.columns)}")
@@ -132,22 +91,23 @@ if __name__ == '__main__':
     print(f"Create {len(cps) * len(cps[0])} constant predicates. Such as {cps[:3]}")
     rules = first_generation(sps)
 
-    results:List[Rule] = []
+    all_found_rules:List[Rule] = []
     for _ in range(20):
         re.execute(rules)
-        fathers, new_rusults = [], []
+        fathers, new_found_rules = [], []
         for rule in rules:
             if rule.ok(cover, confidence):
-                new_rusults.append(rule)
-            elif rule.fertile(cover):
+                new_found_rules.append(rule)
+            elif rule.reproducible(cover):
                 fathers.append(rule)
-        results.extend(new_rusults)
+        all_found_rules.extend(new_found_rules)
         if len(fathers) == 0:
             break
-        rules = next_generation(fathers, new_rusults, results, sps, cps, re, cover)
+        rules = next_generation(fathers, [] if old_rule_found else new_found_rules, all_found_rules, sps, cps, re, cover)
 
-    for rules in groupByKey(results, lambda rule:rule.y).values():
+    for rules in groupByKey(all_found_rules, lambda rule:rule.y).values():
         if len(rules) > 0:
             print(f"RHS: {rules[0].y}")
         for rule in sorted(rules, key = lambda rule:rule.generation):
             print("|---" * (rule.generation -1) + str(rule))
+    print(f"Rules number {len(all_found_rules)}")
