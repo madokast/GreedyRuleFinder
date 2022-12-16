@@ -41,7 +41,7 @@ class Predicate:
     def copy(self)->'Predicate':
         return copy.deepcopy(self)
     
-    def negate(self)->'Predicate':
+    def negate(self)->'NegPred':
         if self.negative:
             raise Exception("Double negation on " + str(self))
 
@@ -73,6 +73,9 @@ class Predicate:
 
     def sql(self)->str:
         return self.__repr__()
+
+Y = Predicate
+NegPred = Predicate
 
 class Rule:
     def __init__(self, Xs:List[Predicate] = [], y:Predicate = None, sameTable:bool = True, rowSize:int = 0, xSupp:int = 0, supp:int = 0, generation:int = 1) -> None:
@@ -139,7 +142,7 @@ class Rule:
     def ok(self, cover:float = 0.1, confidence:float = 0.8)->bool:
         return self.cover() >= cover and self.confidence() >= confidence
     
-    def fertile(self, cover:float = 0.1)->bool:
+    def reproducible(self, cover:float = 0.1)->bool:
         return self.cover() >= cover
 
     def suppSQL(self)->str:
