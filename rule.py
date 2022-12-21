@@ -114,7 +114,7 @@ class Rule:
 
     def singleLine(self)->bool:
         for p in self.allPredicates():
-            if not p.isConst():
+            if p.t1_col is not None:
                 return False
         return True
     
@@ -180,8 +180,6 @@ class RuleExecutor:
             t1[SQL_ID_COL] = range(len(t1))
 
         RuleExecutor._rm(RuleExecutor.SQLITE3_TEMP_FILE)
-        print(RuleExecutor.SQLITE3_URI_RW)
-
         conn:sqlite3.Connection = sqlite3.connect(RuleExecutor.SQLITE3_URI_RW, uri=True)
         t0.to_sql(SQL_TAB0, conn)
         t1.to_sql(SQL_TAB1, conn)
@@ -194,12 +192,16 @@ class RuleExecutor:
         self.execute_time = 0.0
         self.sql_number = 0
 
-        print("Rule executor initing")
+        print("Rule executor launched")
     
     @staticmethod
     def _execute0(conn:sqlite3.Connection, rule:Rule, t0_len:int, t1_len:int):
-        rule.xSupp = conn.execute(rule.xSuppSQL()).fetchone()[0]
-        rule.supp = conn.execute(rule.suppSQL()).fetchone()[0]
+        try:
+            rule.xSupp = conn.execute(rule.xSuppSQL()).fetchone()[0]
+            rule.supp = conn.execute(rule.suppSQL()).fetchone()[0]
+        except BaseException as e:
+            print(e, f"\nerror on execute {rule}\n {rule.xSuppSQL()}\n or {rule.suppSQL()}\n")
+            raise e
         if rule.singleLine():
             rule.rowSize = t0_len
         else:

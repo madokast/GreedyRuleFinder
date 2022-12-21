@@ -1,0 +1,254 @@
+tab(t0) ^ t0.ac = '212' -> t0.cc = '01', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.pn = '1111111' -> t0.cc = '01', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.pn = '2222222' -> t0.cc = '01', rowSize=8, xSupp=3, supp=3, covre=0.38, conf=1.0
+tab(t0) ^ t0.nm = 'Mike' -> t0.cc = '01', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Rick' -> t0.cc = '01', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Joe' -> t0.cc = '01', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Jim' -> t0.cc = '01', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Sean' -> t0.cc = '01', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.str = 'Tree Ave' -> t0.cc = '01', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.str = '5th Ave' -> t0.cc = '01', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.str = 'Elm Str' -> t0.cc = '01', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.str = '3rd Str' -> t0.cc = '01', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.ct = 'NYC' -> t0.cc = '01', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.ct = 'UN' -> t0.cc = '01', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.zip = '07974' -> t0.cc = '01', rowSize=8, xSupp=3, supp=3, covre=0.38, conf=1.0
+tab(t0) ^ t0.zip = '01202' -> t0.cc = '01', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.pn = '3333333' -> t0.cc = '44', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.pn = '4444444' -> t0.cc = '44', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.nm = 'Ben' -> t0.cc = '44', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Ian' -> t0.cc = '44', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.str = 'High St' -> t0.cc = '44', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.str = 'Port PI' -> t0.cc = '44', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.ct = 'EDI' -> t0.cc = '44', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.zip = 'EH4 1DT' -> t0.cc = '44', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.zip = 'W1B 1JH' -> t0.cc = '44', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.pn = '1111111' -> t0.ac = '908', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.nm = 'Mike' -> t0.ac = '908', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Rick' -> t0.ac = '908', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Jim' -> t0.ac = '908', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.str = 'Tree Ave' -> t0.ac = '908', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.str = 'Elm Str' -> t0.ac = '908', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.str = 'Port PI' -> t0.ac = '908', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.ct = 'MH' -> t0.ac = '908', rowSize=8, xSupp=4, supp=4, covre=0.5, conf=1.0
+tab(t0) ^ t0.zip = '07974' -> t0.ac = '908', rowSize=8, xSupp=3, supp=3, covre=0.38, conf=1.0
+tab(t0) ^ t0.zip = 'W1B 1JH' -> t0.ac = '908', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Joe' -> t0.ac = '212', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.str = '5th Ave' -> t0.ac = '212', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.ct = 'NYC' -> t0.ac = '212', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.pn = '3333333' -> t0.ac = '131', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Sean' -> t0.ac = '131', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Ben' -> t0.ac = '131', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.str = '3rd Str' -> t0.ac = '131', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.str = 'High St' -> t0.ac = '131', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.ct = 'UN' -> t0.ac = '131', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.ct = 'EDI' -> t0.ac = '131', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.zip = 'EH4 1DT' -> t0.ac = '131', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.nm = 'Mike' -> t0.pn = '1111111', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Rick' -> t0.pn = '1111111', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.str = 'Tree Ave' -> t0.pn = '1111111', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.ac = '212' -> t0.pn = '2222222', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Joe' -> t0.pn = '2222222', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Jim' -> t0.pn = '2222222', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Sean' -> t0.pn = '2222222', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.str = '5th Ave' -> t0.pn = '2222222', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.str = 'Elm Str' -> t0.pn = '2222222', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.str = '3rd Str' -> t0.pn = '2222222', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.ct = 'NYC' -> t0.pn = '2222222', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.ct = 'UN' -> t0.pn = '2222222', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.zip = '01202' -> t0.pn = '2222222', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.nm = 'Ben' -> t0.pn = '3333333', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Ian' -> t0.pn = '4444444', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.str = 'Port PI' -> t0.pn = '4444444', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.zip = 'W1B 1JH' -> t0.pn = '4444444', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.ac = '212' -> t0.nm = 'Joe', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.str = '5th Ave' -> t0.nm = 'Joe', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.ct = 'NYC' -> t0.nm = 'Joe', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.str = 'Elm Str' -> t0.nm = 'Jim', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.str = '3rd Str' -> t0.nm = 'Sean', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.ct = 'UN' -> t0.nm = 'Sean', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.pn = '3333333' -> t0.nm = 'Ben', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.pn = '4444444' -> t0.nm = 'Ian', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.str = 'Port PI' -> t0.nm = 'Ian', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.zip = 'W1B 1JH' -> t0.nm = 'Ian', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.pn = '1111111' -> t0.str = 'Tree Ave', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.nm = 'Mike' -> t0.str = 'Tree Ave', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Rick' -> t0.str = 'Tree Ave', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.ac = '212' -> t0.str = '5th Ave', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Joe' -> t0.str = '5th Ave', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.ct = 'NYC' -> t0.str = '5th Ave', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Jim' -> t0.str = 'Elm Str', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Sean' -> t0.str = '3rd Str', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.ct = 'UN' -> t0.str = '3rd Str', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.pn = '3333333' -> t0.str = 'High St', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Ben' -> t0.str = 'High St', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.ct = 'EDI' -> t0.str = 'High St', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.zip = 'EH4 1DT' -> t0.str = 'High St', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.zip = 'W1B 1JH' -> t0.str = 'Port PI', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.ac = '908' -> t0.ct = 'MH', rowSize=8, xSupp=4, supp=4, covre=0.5, conf=1.0
+tab(t0) ^ t0.pn = '1111111' -> t0.ct = 'MH', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.nm = 'Mike' -> t0.ct = 'MH', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Rick' -> t0.ct = 'MH', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Jim' -> t0.ct = 'MH', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.str = 'Tree Ave' -> t0.ct = 'MH', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.str = 'Elm Str' -> t0.ct = 'MH', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.str = 'Port PI' -> t0.ct = 'MH', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.zip = '07974' -> t0.ct = 'MH', rowSize=8, xSupp=3, supp=3, covre=0.38, conf=1.0
+tab(t0) ^ t0.zip = 'W1B 1JH' -> t0.ct = 'MH', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.ac = '212' -> t0.ct = 'NYC', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Joe' -> t0.ct = 'NYC', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.str = '5th Ave' -> t0.ct = 'NYC', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Sean' -> t0.ct = 'UN', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.str = '3rd Str' -> t0.ct = 'UN', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.pn = '3333333' -> t0.ct = 'EDI', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Ben' -> t0.ct = 'EDI', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.str = 'High St' -> t0.ct = 'EDI', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.zip = 'EH4 1DT' -> t0.ct = 'EDI', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.pn = '1111111' -> t0.zip = '07974', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.nm = 'Mike' -> t0.zip = '07974', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Rick' -> t0.zip = '07974', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Jim' -> t0.zip = '07974', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.str = 'Tree Ave' -> t0.zip = '07974', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.str = 'Elm Str' -> t0.zip = '07974', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.ac = '212' -> t0.zip = '01202', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Joe' -> t0.zip = '01202', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Sean' -> t0.zip = '01202', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.str = '5th Ave' -> t0.zip = '01202', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.str = '3rd Str' -> t0.zip = '01202', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.ct = 'NYC' -> t0.zip = '01202', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.ct = 'UN' -> t0.zip = '01202', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.pn = '3333333' -> t0.zip = 'EH4 1DT', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.nm = 'Ben' -> t0.zip = 'EH4 1DT', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ t0.str = 'High St' -> t0.zip = 'EH4 1DT', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.ct = 'EDI' -> t0.zip = 'EH4 1DT', rowSize=8, xSupp=2, supp=2, covre=0.25, conf=1.0
+tab(t0) ^ t0.str = 'Port PI' -> t0.zip = 'W1B 1JH', rowSize=8, xSupp=1, supp=1, covre=0.12, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.pn = t1.pn -> t0.cc = t1.cc, rowSize=56, xSupp=10, supp=10, covre=0.18, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.nm = t1.nm -> t0.cc = t1.cc, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str = t1.str -> t0.cc = t1.cc, rowSize=56, xSupp=4, supp=4, covre=0.07, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.zip = t1.zip -> t0.cc = t1.cc, rowSize=56, xSupp=10, supp=10, covre=0.18, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str = t1.str -> t0.ac = t1.ac, rowSize=56, xSupp=4, supp=4, covre=0.07, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ct = t1.ct -> t0.ac = t1.ac, rowSize=56, xSupp=14, supp=14, covre=0.25, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.nm = t1.nm -> t0.pn = t1.pn, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str = t1.str -> t0.ct = t1.ct, rowSize=56, xSupp=4, supp=4, covre=0.07, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str = t1.str -> t0.zip = t1.zip, rowSize=56, xSupp=4, supp=4, covre=0.07, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.cc = t1.cc ^ t0.pn = '4444444' ^ t1.pn = '4444444' -> t0.nm = t1.nm, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.pn = t1.pn ^ t0.cc = '44' ^ t1.cc = '44' -> t0.nm = t1.nm, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.cc = t1.cc ^ t0.ac = '131' ^ t1.ac = '131' -> t0.str = t1.str, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.cc = t1.cc ^ t0.pn = '1111111' ^ t1.pn = '1111111' -> t0.str = t1.str, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.cc = t1.cc ^ t0.ct = 'EDI' ^ t1.ct = 'EDI' -> t0.str = t1.str, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.cc = t1.cc ^ t0.zip = 'EH4 1DT' ^ t1.zip = 'EH4 1DT' -> t0.str = t1.str, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ac = t1.ac ^ t0.pn = t1.pn -> t0.str = t1.str, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ac = t1.ac ^ t0.cc = '44' ^ t1.cc = '44' -> t0.str = t1.str, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ac = t1.ac ^ t0.pn = '1111111' ^ t1.pn = '1111111' -> t0.str = t1.str, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ac = t1.ac ^ t0.ct = 'EDI' ^ t1.ct = 'EDI' -> t0.str = t1.str, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ac = t1.ac ^ t0.zip = 'EH4 1DT' ^ t1.zip = 'EH4 1DT' -> t0.str = t1.str, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.pn = t1.pn ^ t0.ac = t1.ac -> t0.str = t1.str, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.pn = t1.pn ^ t0.ct = t1.ct -> t0.str = t1.str, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.pn = t1.pn ^ t0.ac = '908' ^ t1.ac = '908' -> t0.str = t1.str, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.pn = t1.pn ^ t0.ct = 'MH' ^ t1.ct = 'MH' -> t0.str = t1.str, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.pn = t1.pn ^ t0.zip = '07974' ^ t1.zip = '07974' -> t0.str = t1.str, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ct = t1.ct ^ t0.pn = t1.pn -> t0.str = t1.str, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ct = t1.ct ^ t0.cc = '44' ^ t1.cc = '44' -> t0.str = t1.str, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ct = t1.ct ^ t0.ac = '131' ^ t1.ac = '131' -> t0.str = t1.str, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ct = t1.ct ^ t0.pn = '1111111' ^ t1.pn = '1111111' -> t0.str = t1.str, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ct = t1.ct ^ t0.zip = 'EH4 1DT' ^ t1.zip = 'EH4 1DT' -> t0.str = t1.str, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.zip = t1.zip ^ t0.cc = '44' ^ t1.cc = '44' -> t0.str = t1.str, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.zip = t1.zip ^ t0.ac = '131' ^ t1.ac = '131' -> t0.str = t1.str, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.zip = t1.zip ^ t0.pn = '1111111' ^ t1.pn = '1111111' -> t0.str = t1.str, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.zip = t1.zip ^ t0.ct = 'EDI' ^ t1.ct = 'EDI' -> t0.str = t1.str, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.cc = '01' ^ t0.pn = t1.pn -> t1.cc = '01', rowSize=56, xSupp=8, supp=8, covre=0.14, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.cc = '01' ^ t0.str = t1.str -> t1.cc = '01', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.cc = '01' ^ t0.zip = t1.zip -> t1.cc = '01', rowSize=56, xSupp=8, supp=8, covre=0.14, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.cc = '01' ^ t0.pn = '1111111' ^ t1.pn = '1111111' -> t1.cc = '01', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.cc = '01' ^ t0.pn = '2222222' ^ t1.pn = '2222222' -> t1.cc = '01', rowSize=56, xSupp=6, supp=6, covre=0.11, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.cc = '01' ^ t0.str = 'Tree Ave' ^ t1.str = 'Tree Ave' -> t1.cc = '01', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.cc = '01' ^ t0.zip = '07974' ^ t1.zip = '07974' -> t1.cc = '01', rowSize=56, xSupp=6, supp=6, covre=0.11, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.cc = '01' ^ t0.zip = '01202' ^ t1.zip = '01202' -> t1.cc = '01', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.cc = '44' ^ t0.pn = t1.pn -> t1.cc = '44', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.cc = '44' ^ t0.nm = t1.nm -> t1.cc = '44', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.cc = '44' ^ t0.str = t1.str -> t1.cc = '44', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.cc = '44' ^ t0.zip = t1.zip -> t1.cc = '44', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.cc = '44' ^ t0.pn = '4444444' ^ t1.pn = '4444444' -> t1.cc = '44', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.cc = '44' ^ t0.nm = 'Ian' ^ t1.nm = 'Ian' -> t1.cc = '44', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.cc = '44' ^ t0.str = 'High St' ^ t1.str = 'High St' -> t1.cc = '44', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.cc = '44' ^ t0.ct = 'EDI' ^ t1.ct = 'EDI' -> t1.cc = '44', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.cc = '44' ^ t0.zip = 'EH4 1DT' ^ t1.zip = 'EH4 1DT' -> t1.cc = '44', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ac = '908' ^ t0.str = t1.str -> t1.ac = '908', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ac = '908' ^ t0.ct = t1.ct -> t1.ac = '908', rowSize=56, xSupp=12, supp=12, covre=0.21, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ac = '908' ^ t0.zip = t1.zip -> t1.ac = '908', rowSize=56, xSupp=6, supp=6, covre=0.11, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ac = '908' ^ t0.pn = '1111111' ^ t1.pn = '1111111' -> t1.ac = '908', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ac = '908' ^ t0.str = 'Tree Ave' ^ t1.str = 'Tree Ave' -> t1.ac = '908', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ac = '908' ^ t0.ct = 'MH' ^ t1.ct = 'MH' -> t1.ac = '908', rowSize=56, xSupp=12, supp=12, covre=0.21, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ac = '908' ^ t0.zip = '07974' ^ t1.zip = '07974' -> t1.ac = '908', rowSize=56, xSupp=6, supp=6, covre=0.11, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ac = '131' ^ t0.str = t1.str -> t1.ac = '131', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ac = '131' ^ t0.ct = t1.ct -> t1.ac = '131', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ac = '131' ^ t0.str = 'High St' ^ t1.str = 'High St' -> t1.ac = '131', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ac = '131' ^ t0.ct = 'EDI' ^ t1.ct = 'EDI' -> t1.ac = '131', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ac = '131' ^ t0.zip = 'EH4 1DT' ^ t1.zip = 'EH4 1DT' -> t1.ac = '131', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.pn = '1111111' ^ t0.str = t1.str -> t1.pn = '1111111', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.pn = '1111111' ^ t0.str = 'Tree Ave' ^ t1.str = 'Tree Ave' -> t1.pn = '1111111', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.pn = '2222222' ^ t0.zip = '01202' ^ t1.zip = '01202' -> t1.pn = '2222222', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.pn = '4444444' ^ t0.nm = t1.nm -> t1.pn = '4444444', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.pn = '4444444' ^ t0.nm = 'Ian' ^ t1.nm = 'Ian' -> t1.pn = '4444444', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.nm = 'Ian' ^ t0.pn = t1.pn -> t1.nm = 'Ian', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.nm = 'Ian' ^ t0.pn = '4444444' ^ t1.pn = '4444444' -> t1.nm = 'Ian', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str = 'Tree Ave' ^ t0.pn = t1.pn -> t1.str = 'Tree Ave', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str = 'Tree Ave' ^ t0.pn = '1111111' ^ t1.pn = '1111111' -> t1.str = 'Tree Ave', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str = 'High St' ^ t0.ct = t1.ct -> t1.str = 'High St', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str = 'High St' ^ t0.zip = t1.zip -> t1.str = 'High St', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str = 'High St' ^ t0.ct = 'EDI' ^ t1.ct = 'EDI' -> t1.str = 'High St', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str = 'High St' ^ t0.zip = 'EH4 1DT' ^ t1.zip = 'EH4 1DT' -> t1.str = 'High St', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ct = 'MH' ^ t0.ac = t1.ac -> t1.ct = 'MH', rowSize=56, xSupp=12, supp=12, covre=0.21, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ct = 'MH' ^ t0.str = t1.str -> t1.ct = 'MH', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ct = 'MH' ^ t0.zip = t1.zip -> t1.ct = 'MH', rowSize=56, xSupp=6, supp=6, covre=0.11, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ct = 'MH' ^ t0.ac = '908' ^ t1.ac = '908' -> t1.ct = 'MH', rowSize=56, xSupp=12, supp=12, covre=0.21, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ct = 'MH' ^ t0.pn = '1111111' ^ t1.pn = '1111111' -> t1.ct = 'MH', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ct = 'MH' ^ t0.str = 'Tree Ave' ^ t1.str = 'Tree Ave' -> t1.ct = 'MH', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ct = 'MH' ^ t0.zip = '07974' ^ t1.zip = '07974' -> t1.ct = 'MH', rowSize=56, xSupp=6, supp=6, covre=0.11, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ct = 'EDI' ^ t0.str = t1.str -> t1.ct = 'EDI', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ct = 'EDI' ^ t0.zip = t1.zip -> t1.ct = 'EDI', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ct = 'EDI' ^ t0.str = 'High St' ^ t1.str = 'High St' -> t1.ct = 'EDI', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.ct = 'EDI' ^ t0.zip = 'EH4 1DT' ^ t1.zip = 'EH4 1DT' -> t1.ct = 'EDI', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.zip = '07974' ^ t0.str = t1.str -> t1.zip = '07974', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.zip = '07974' ^ t0.pn = '1111111' ^ t1.pn = '1111111' -> t1.zip = '07974', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.zip = '07974' ^ t0.str = 'Tree Ave' ^ t1.str = 'Tree Ave' -> t1.zip = '07974', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.zip = 'EH4 1DT' ^ t0.str = t1.str -> t1.zip = 'EH4 1DT', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.zip = 'EH4 1DT' ^ t0.ct = t1.ct -> t1.zip = 'EH4 1DT', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.zip = 'EH4 1DT' ^ t0.str = 'High St' ^ t1.str = 'High St' -> t1.zip = 'EH4 1DT', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.zip = 'EH4 1DT' ^ t0.ct = 'EDI' ^ t1.ct = 'EDI' -> t1.zip = 'EH4 1DT', rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.nm <> t1.nm ^ t0.cc = t1.cc ^ t0.str = 'Tree Ave' ^ t1.str = 'Tree Ave' -> t0.pn = t1.pn, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.nm <> t1.nm ^ t0.cc = t1.cc ^ t0.zip = '01202' ^ t1.zip = '01202' -> t0.pn = t1.pn, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.nm <> t1.nm ^ t0.ac = t1.ac ^ t0.str = 'Tree Ave' ^ t1.str = 'Tree Ave' -> t0.pn = t1.pn, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.nm <> t1.nm ^ t0.str = t1.str ^ t0.cc = '01' ^ t1.cc = '01' -> t0.pn = t1.pn, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.nm <> t1.nm ^ t0.str = t1.str ^ t0.ac = '908' ^ t1.ac = '908' -> t0.pn = t1.pn, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.nm <> t1.nm ^ t0.str = t1.str ^ t0.ct = 'MH' ^ t1.ct = 'MH' -> t0.pn = t1.pn, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.nm <> t1.nm ^ t0.str = t1.str ^ t0.zip = '07974' ^ t1.zip = '07974' -> t0.pn = t1.pn, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.nm <> t1.nm ^ t0.ct = t1.ct ^ t0.str = 'Tree Ave' ^ t1.str = 'Tree Ave' -> t0.pn = t1.pn, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.nm <> t1.nm ^ t0.zip = t1.zip ^ t0.str = 'Tree Ave' ^ t1.str = 'Tree Ave' -> t0.pn = t1.pn, rowSize=56, xSupp=2, supp=2, covre=0.04, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> t1.str ^ t0.cc = t1.cc ^ t0.ac = t1.ac -> t0.zip = t1.zip, rowSize=56, xSupp=4, supp=4, covre=0.07, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> t1.str ^ t0.cc = t1.cc ^ t0.ct = t1.ct -> t0.zip = t1.zip, rowSize=56, xSupp=4, supp=4, covre=0.07, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> t1.str ^ t0.cc = t1.cc ^ t0.ac = '908' ^ t1.ac = '908' -> t0.zip = t1.zip, rowSize=56, xSupp=4, supp=4, covre=0.07, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> t1.str ^ t0.cc = t1.cc ^ t0.ct = 'MH' ^ t1.ct = 'MH' -> t0.zip = t1.zip, rowSize=56, xSupp=4, supp=4, covre=0.07, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> t1.str ^ t0.ac = t1.ac ^ t0.cc = t1.cc -> t0.zip = t1.zip, rowSize=56, xSupp=4, supp=4, covre=0.07, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> t1.str ^ t0.ac = t1.ac ^ t0.cc = '01' ^ t1.cc = '01' -> t0.zip = t1.zip, rowSize=56, xSupp=4, supp=4, covre=0.07, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> t1.str ^ t0.ct = t1.ct ^ t0.cc = t1.cc -> t0.zip = t1.zip, rowSize=56, xSupp=4, supp=4, covre=0.07, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> t1.str ^ t0.ct = t1.ct ^ t0.cc = '01' ^ t1.cc = '01' -> t0.zip = t1.zip, rowSize=56, xSupp=4, supp=4, covre=0.07, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> t1.str ^ t0.cc = t1.cc ^ t0.ac = t1.ac -> t0.ct = t1.ct, rowSize=56, xSupp=4, supp=4, covre=0.07, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> t1.str ^ t0.cc = t1.cc ^ t0.ac = '908' ^ t1.ac = '908' -> t0.ct = t1.ct, rowSize=56, xSupp=4, supp=4, covre=0.07, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> t1.str ^ t0.cc = t1.cc ^ t0.zip = '07974' ^ t1.zip = '07974' -> t0.ct = t1.ct, rowSize=56, xSupp=4, supp=4, covre=0.07, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> t1.str ^ t0.ac = t1.ac ^ t0.cc = t1.cc -> t0.ct = t1.ct, rowSize=56, xSupp=4, supp=4, covre=0.07, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> t1.str ^ t0.ac = t1.ac ^ t0.zip = t1.zip -> t0.ct = t1.ct, rowSize=56, xSupp=4, supp=4, covre=0.07, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> t1.str ^ t0.ac = t1.ac ^ t0.cc = '01' ^ t1.cc = '01' -> t0.ct = t1.ct, rowSize=56, xSupp=4, supp=4, covre=0.07, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> t1.str ^ t0.ac = t1.ac ^ t0.zip = '07974' ^ t1.zip = '07974' -> t0.ct = t1.ct, rowSize=56, xSupp=4, supp=4, covre=0.07, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> t1.str ^ t0.zip = t1.zip ^ t0.ac = t1.ac -> t0.ct = t1.ct, rowSize=56, xSupp=4, supp=4, covre=0.07, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> t1.str ^ t0.zip = t1.zip ^ t0.ac = '908' ^ t1.ac = '908' -> t0.ct = t1.ct, rowSize=56, xSupp=4, supp=4, covre=0.07, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> 'Tree Ave' ^ t0.pn <> '1111111' ^ t1.str <> 'Tree Ave' ^ t0.zip <> '07974' ^ t0.str <> t1.str ^ t1.pn <> '1111111' ^ t0.cc = '44' ^ t0.ct = t1.ct -> t1.zip = '07974', rowSize=56, xSupp=1, supp=1, covre=0.02, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> 'Tree Ave' ^ t0.pn <> '1111111' ^ t1.str <> 'Tree Ave' ^ t0.zip <> '07974' ^ t0.str <> t1.str ^ t1.pn <> '1111111' ^ t0.cc = '44' ^ t0.ac = '908' ^ t1.ac = '908' -> t1.zip = '07974', rowSize=56, xSupp=1, supp=1, covre=0.02, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> 'Tree Ave' ^ t0.pn <> '1111111' ^ t1.str <> 'Tree Ave' ^ t0.zip <> '07974' ^ t0.str <> t1.str ^ t1.pn <> '1111111' ^ t0.cc = '44' ^ t0.ct = 'MH' ^ t1.ct = 'MH' -> t1.zip = '07974', rowSize=56, xSupp=1, supp=1, covre=0.02, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> 'Tree Ave' ^ t0.pn <> '1111111' ^ t1.str <> 'Tree Ave' ^ t0.zip <> '07974' ^ t0.str <> t1.str ^ t1.pn <> '1111111' ^ t0.ac = '908' ^ t0.ct = t1.ct -> t1.zip = '07974', rowSize=56, xSupp=1, supp=1, covre=0.02, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> 'Tree Ave' ^ t0.pn <> '1111111' ^ t1.str <> 'Tree Ave' ^ t0.zip <> '07974' ^ t0.str <> t1.str ^ t1.pn <> '1111111' ^ t0.ac = '908' ^ t0.ct = 'MH' ^ t1.ct = 'MH' -> t1.zip = '07974', rowSize=56, xSupp=1, supp=1, covre=0.02, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> 'Tree Ave' ^ t0.pn <> '1111111' ^ t1.str <> 'Tree Ave' ^ t0.zip <> '07974' ^ t0.str <> t1.str ^ t1.pn <> '1111111' ^ t0.nm = 'Ian' ^ t0.ct = t1.ct -> t1.zip = '07974', rowSize=56, xSupp=1, supp=1, covre=0.02, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> 'Tree Ave' ^ t0.pn <> '1111111' ^ t1.str <> 'Tree Ave' ^ t0.zip <> '07974' ^ t0.str <> t1.str ^ t1.pn <> '1111111' ^ t0.nm = 'Ian' ^ t0.ac = '908' ^ t1.ac = '908' -> t1.zip = '07974', rowSize=56, xSupp=1, supp=1, covre=0.02, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> 'Tree Ave' ^ t0.pn <> '1111111' ^ t1.str <> 'Tree Ave' ^ t0.zip <> '07974' ^ t0.str <> t1.str ^ t1.pn <> '1111111' ^ t0.nm = 'Ian' ^ t0.ct = 'MH' ^ t1.ct = 'MH' -> t1.zip = '07974', rowSize=56, xSupp=1, supp=1, covre=0.02, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> 'Tree Ave' ^ t0.pn <> '1111111' ^ t1.str <> 'Tree Ave' ^ t0.zip <> '07974' ^ t0.str <> t1.str ^ t1.pn <> '1111111' ^ t0.ct = 'MH' ^ t0.ac = t1.ac -> t1.zip = '07974', rowSize=56, xSupp=1, supp=1, covre=0.02, conf=1.0
+tab(t0) ^ tab(t1) ^ t0.str <> 'Tree Ave' ^ t0.pn <> '1111111' ^ t1.str <> 'Tree Ave' ^ t0.zip <> '07974' ^ t0.str <> t1.str ^ t1.pn <> '1111111' ^ t0.ct = 'MH' ^ t0.ac = '908' ^ t1.ac = '908' -> t1.zip = '07974', rowSize=56, xSupp=1, supp=1, covre=0.02, conf=1.0
