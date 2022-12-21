@@ -2,7 +2,7 @@ from typing import Callable, Dict, Iterable, List, TypeVar
 K = TypeVar('K')
 V = TypeVar('V')
 
-__all__ = ["countByValue", "groupByKey", "foreach"]
+__all__ = ["countByValue", "groupByKey", "foreach", "collect"]
 
 def countByValue(values:Iterable[V])->Dict[V, int]:
     m:Dict[V, int] = {}
@@ -22,3 +22,6 @@ def groupByKey(values:Iterable[V], keyFunc:Callable[[V], K])->Dict[K, List[V]]:
 def foreach(values:Iterable[V], consumer:Callable[[V], None])->None:
     for v in values:
         consumer(v)
+
+def collect(values:Iterable[V], filter:Callable[[V], bool])->List[V]:
+    return [v for v in values if filter(v)]
