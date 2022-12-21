@@ -117,15 +117,6 @@ class Rule:
             if not p.isConst():
                 return False
         return True
-
-    def rowSizeSQL(self)->str:
-        if self.singleLine():
-            return f"SELECT count(*) FROM {SQL_TAB0} AS t0"
-        else:
-            sql = f"SELECT count(*) FROM {SQL_TAB0} AS t0, {SQL_TAB1} AS t1"
-            if self.sameTable:
-                sql += f" WHERE t0.{SQL_ID_COL} <> t1.{SQL_ID_COL}"
-            return sql
     
     def xSuppSQL(self)->str:
         sql = f"SELECT count(*) FROM {SQL_TAB0} AS t0"
@@ -174,8 +165,10 @@ class Rule:
             return f"{t0_tab}(t0) ^ {t1_tab}(t{right_tuple_id}) ^ {self.__str__(right_tuple_id)}"
 
 class RuleExecutor:
-    SQLITE3_TEMP_FILE = 'sqlite3.tmp'
-    def __init__(self, t0:pd.DataFrame, t1:pd.DataFrame = None, sqlite3TempFile:str=None) -> None:
+    SQLITE3_TEMP_FILE = 'sqlite3.db'
+    SQLITE3_URI_RW = 'file:' + SQLITE3_TEMP_FILE + "?mode=rwc"
+    SQLITE3_URI_RO = 'file:' + SQLITE3_TEMP_FILE + "?mode=ro"
+    def __init__(self, t0:pd.DataFrame, t1:pd.DataFrame = None) -> None:
         t0 = copy.deepcopy(t0)
         t0[SQL_ID_COL] = range(len(t0))
 
@@ -186,32 +179,22 @@ class RuleExecutor:
             t1 = copy.deepcopy(t1)
             t1[SQL_ID_COL] = range(len(t1))
 
-        if sqlite3TempFile is None:
-            sqlite3TempFile = RuleExecutor.SQLITE3_TEMP_FILE
+        RuleExecutor._rm(RuleExecutor.SQLITE3_TEMP_FILE)
+        print(RuleExecutor.SQLITE3_URI_RW)
 
-        RuleExecutor._rm(sqlite3TempFile)
-        conn:sqlite3.Connection = sqlite3.connect(sqlite3TempFile)
+        conn:sqlite3.Connection = sqlite3.connect(RuleExecutor.SQLITE3_URI_RW, uri=True)
         t0.to_sql(SQL_TAB0, conn)
         t1.to_sql(SQL_TAB1, conn)
+        conn.close() # flush
+        conn = sqlite3.connect(RuleExecutor.SQLITE3_URI_RO, uri=True)
 
         self.conn = conn
-        self.sqlite3TempFile = sqlite3TempFile
         self.t0_len = len(t0)
         self.t1_len = len(t1)
         self.execute_time = 0.0
         self.sql_number = 0
 
         print("Rule executor initing")
-
-    
-    def predicatesSuppport(self, predicates:List[Predicate], sameTable:bool)->int:
-        self.execute_time -= time.time()
-        assert len(predicates) > 0
-        rule_proxy = Rule(Xs = predicates, sameTable = sameTable)
-        support = self.conn.execute(rule_proxy.xSuppSQL()).fetchone()[0]
-        self.execute_time += time.time()
-        self.sql_number += 1
-        return support
     
     @staticmethod
     def _execute0(conn:sqlite3.Connection, rule:Rule, t0_len:int, t1_len:int):
@@ -236,31 +219,31 @@ class RuleExecutor:
         return rules
     
     def execute_parallel(self, rules:List[Rule], workerNum:int=None)->List[Rule]:
+        self.execute_time -= time.time()
         from multiprocessing import Pool
         workerNum = (os.cpu_count() + 1) if workerNum is None else workerNum
         batchSize = int(len(rules)/workerNum) + 1
         pool = Pool(workerNum)
-
-        self.conn.close() # close for self copy in _sub_execute
 
         futures:List = []
         for i in range(10000000):
             subRules = rules[batchSize*i:batchSize*(i+1)]
             if len(subRules) == 0:
                 break
-            future = pool.apply_async(_parallel_execute, (subRules, self.sqlite3TempFile, i, self.t0_len, self.t1_len))
+            future = pool.apply_async(_parallel_execute, (subRules, i, self.t0_len, self.t1_len))
             futures.append(future)
 
-        self.conn = sqlite3.connect(self.sqlite3TempFile)
         results:List[Rule] = []
         for future in tqdm(futures, desc = "Parallel-Fetching"):
             results.extend(future.get())
-        
+
+        self.execute_time += time.time()
+        self.sql_number += len(rules) * 2
         return results
     
     def __del__(self):
         self.conn.close()
-        RuleExecutor._rm(self.sqlite3TempFile)
+        RuleExecutor._rm(RuleExecutor.SQLITE3_TEMP_FILE)
         if self.sql_number > 0:
             print(f"RuleExecutor closed. Executing {self.sql_number} SQLs in {self.execute_time}s. {self.execute_time*1000/self.sql_number}ms/SQL")
 
@@ -270,20 +253,15 @@ class RuleExecutor:
             time.sleep(1e-10)
             os.remove(file)
 
-def _parallel_execute(subRules:List[Rule], sqlite3File:str, workerId:int, t0_len:int, t1_len:int)->List[Rule]:
-    from shutil import copyfile
-    desFile = sqlite3File + str(workerId)
-    copyfile(sqlite3File, desFile)
-    conn = sqlite3.connect(desFile)
+# For parallel rule-execute
+def _parallel_execute(subRules:List[Rule], workerId:int, t0_len:int, t1_len:int)->List[Rule]:
+    conn = sqlite3.connect(RuleExecutor.SQLITE3_URI_RO, uri=True)
 
-    results = []
     for rule in (tqdm(subRules, desc = "Parallel-Executing-part_0") if workerId == 0 else subRules):
         RuleExecutor._execute0(conn, rule, t0_len, t1_len)
-        results.append(rule)
 
     conn.close()
-    RuleExecutor._rm(desFile)
-    return results
+    return subRules
 
 if __name__ == '__main__':
     data = pd.read_csv("testdata/relation.csv", dtype=str)
