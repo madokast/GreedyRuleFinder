@@ -1,3 +1,5 @@
+import sys
+import time
 from typing import Dict, List, Set, Tuple
 from rule import Predicate, Rule, RuleExecutor, Y, NegPred
 import pandas as pd
@@ -47,7 +49,7 @@ def next_generation(fathers:List[Rule], new_found_rules:List[Rule], all_found_ru
     no_create_children_Ys:Set[Y] = set()
     for y, neg_preds in negetive_predicates_map.items():
         rule_proxy = Rule(Xs = list(neg_preds), y = y)
-        re.execute([rule_proxy])
+        re.execute([rule_proxy], progressBar=False)
         if rule_proxy.cover() < cover:
             no_create_children_Ys.add(y)
     
@@ -79,21 +81,23 @@ def next_generation(fathers:List[Rule], new_found_rules:List[Rule], all_found_ru
     return children
 
 if __name__ == '__main__':
-    old_rule_found = False
-    cover, confidence = 0.01, 1.0
-    data = pd.read_csv(r"testdata/relation.csv", dtype=str)
+    greedy = True
+    start = time.time()
+    cover, confidence = 0.0000001, 1.0
+    data = pd.read_csv(r"D:\Downloads\testdata\查错\datasets\flights\clean.csv", dtype=str)
     print(f"Table length {len(data)} with {len(data.columns)} columns {list(data.columns)}")
     re = RuleExecutor(data)
+    ignore_columns = ['row_id', 'source_data_id', 'last_update_time', 'batch_id', 'uuid', 'tuple_id']
 
-    sps = all_structual_predicates(data)
+    sps = all_structual_predicates(data, ignore_columns=ignore_columns)
     print(f"Create {len(sps)} structual predicates. Such as {sps[:3]}")
-    cps = all_constant_predicates(data, singleLine=False, threshold=0.3)
-    print(f"Create {len(cps) * len(cps[0])} constant predicates. Such as {cps[:3]}")
+    cps = all_constant_predicates(data, singleLine=False, ignore_columns=ignore_columns, threshold=0.01)
+    print(f"Create {len(cps) * (0 if len(cps) == 0 else len(cps[0]))} constant predicates. Such as {cps[:3]}")
     rules = first_generation(sps)
 
     all_found_rules:List[Rule] = []
     for _ in range(20):
-        re.execute(rules)
+        rules = re.execute_parallel(rules)
         fathers, new_found_rules = [], []
         for rule in rules:
             if rule.ok(cover, confidence):
@@ -103,11 +107,11 @@ if __name__ == '__main__':
         all_found_rules.extend(new_found_rules)
         if len(fathers) == 0:
             break
-        rules = next_generation(fathers, [] if old_rule_found else new_found_rules, all_found_rules, sps, cps, re, cover)
+        rules = next_generation(fathers, new_found_rules if greedy else [], all_found_rules, sps, cps, re, cover)
 
     for rules in groupByKey(all_found_rules, lambda rule:rule.y).values():
         if len(rules) > 0:
             print(f"RHS: {rules[0].y}")
         for rule in sorted(rules, key = lambda rule:rule.generation):
             print("|---" * (rule.generation -1) + str(rule))
-    print(f"Rules number {len(all_found_rules)}")
+    print(f"Rules number {len(all_found_rules)} duration {time.time() - start}s")
