@@ -1,5 +1,3 @@
-from calendar import c
-import sys
 import time
 from typing import Callable, Dict, List, Set, Tuple
 from rule import Predicate, Rule, RuleExecutor, Y, NegPred
@@ -71,7 +69,7 @@ def next_generation(fathers:List[Rule], ruleExecutor:RuleExecutor, new_found_rul
 
     no_create_children_Ys:Set[Y] = set()
     for y, neg_preds in negetive_predicates_map.items():
-        rule_proxy = Rule(Xs = list(neg_preds), y = y)
+        rule_proxy = Rule(Xs = list(neg_preds)[:900], y = y)
         ruleExecutor.execute([rule_proxy], progressBar=False)
         if rule_proxy.cover() < cover:
             no_create_children_Ys.add(y)
@@ -115,7 +113,7 @@ def next_generation(fathers:List[Rule], ruleExecutor:RuleExecutor, new_found_rul
 
 def rule_find(tables:Dict[str, pd.DataFrame], cover:float = 0.01, confidence:float = 0.8, constant_threshold:float = 0.1,
         ignore_column:Callable[[str], bool] = lambda c:False, x_column:Callable[[str], bool] = lambda c:True,
-        y_column:Callable[[str], bool] = lambda c:True, max_levelwise_depth:int = 20, parallel_sql:bool = False, 
+        y_column:Callable[[str], bool] = lambda c:True, max_levelwise_depth:int = 20, sql_thread_num:int = 1, 
         single_line:bool = True, multi_line:bool = True, cross_table:bool = False, greedy:bool = True)->List[Rule]:
     result:List[Rule] = []
     for tabName, data in tables.items():
@@ -126,7 +124,7 @@ def rule_find(tables:Dict[str, pd.DataFrame], cover:float = 0.01, confidence:flo
             rules = first_generation(constant_predicates=cps, x_column=x_column, y_column=y_column)
             all_found_rules:List[Rule] = []
             for _ in range(max_levelwise_depth):
-                rules = re.execute_parallel(rules) if parallel_sql else re.execute(rules)
+                rules = re.execute_parallel(rules, workerNum=sql_thread_num) if sql_thread_num > 1 else re.execute(rules)
                 new_found_rules = collect(rules, lambda r:r.ok(cover, confidence))
                 fathers = collect(rules, lambda r:(not r.ok(cover, confidence)) and r.reproducible(cover))
                 all_found_rules.extend(new_found_rules)
@@ -140,7 +138,7 @@ def rule_find(tables:Dict[str, pd.DataFrame], cover:float = 0.01, confidence:flo
             rules = first_generation(sps, cps, x_column=x_column, y_column=y_column)
             all_found_rules:List[Rule] = []
             for _ in range(max_levelwise_depth):
-                rules = re.execute_parallel(rules) if parallel_sql else re.execute(rules)
+                rules = re.execute_parallel(rules, workerNum=sql_thread_num) if sql_thread_num > 1 else re.execute(rules)
                 new_found_rules = collect(rules, lambda r:r.ok(cover, confidence))
                 fathers = collect(rules, lambda r:(not r.ok(cover, confidence)) and r.reproducible(cover))
                 all_found_rules.extend(new_found_rules)
@@ -152,13 +150,16 @@ def rule_find(tables:Dict[str, pd.DataFrame], cover:float = 0.01, confidence:flo
 
 if __name__ == '__main__':
     start = time.time()
-    data = pd.read_csv(r"testdata/relation.csv", dtype=str)
-    ignore_columns = ['row_id', 'source_data_id', 'last_update_time', 'batch_id', 'uuid', 'tuple_id']
+    data = pd.read_csv(r"D:\work\20221104_规则发现查错效果分析\repy\data2\hospital\dirty_l.csv", dtype=str)
+    ignore_columns = ['id', 'aic', '_aic', 'index', '_index', 'row_id', 'source_data_id', 'last_update_time', 'batch_id', 'uuid', 'tuple_id']
 
 
-    all_found_rules = rule_find({"tab":data}, cover = 1e-10, confidence=1.0, constant_threshold=0.1, 
-        ignore_column=lambda c:c in ignore_columns, parallel_sql=True, 
-        single_line=True, multi_line=True, greedy=True)
+    all_found_rules = rule_find({"tax":data}, cover = 1e-10, confidence=1.0, constant_threshold=0.1, 
+        ignore_column=lambda c:c in ignore_columns, sql_thread_num=14, 
+        single_line=True, multi_line=False, greedy=True,
+        x_column = lambda c:not c.startswith('_'),
+        y_column = lambda c:c.startswith('_'),
+    )
 
     for rules in groupByKey(all_found_rules, lambda rule:rule.y).values():
         if len(rules) > 0:
@@ -166,7 +167,7 @@ if __name__ == '__main__':
         for rule in sorted(rules, key = lambda rule:rule.generation):
             print("|---" * (rule.generation -1) + str(rule))
 
-    with open("rules.txt", mode = "w") as f:
-        foreach(all_found_rules, lambda r:print(r.ree("tab"), end='\n', file=f))
+    with open("rules.txt", mode = "bw") as f:
+        foreach(all_found_rules, lambda r:f.write((r.ree("tax")+'\r\n').encode('utf-8')))
 
     print(f"Rules number {len(all_found_rules)} duration {time.time() - start}s")

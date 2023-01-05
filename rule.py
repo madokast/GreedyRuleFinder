@@ -16,7 +16,7 @@ class Predicate:
         self.t1_col = t1_col
         self.operator = operator
         self.constant = constant
-        self.columns = set([t0_col]) if t1_col is None else set([t0_col, t1_col])
+        self.columns = set([col for col in [t0_col, t1_col] if col is not None])
         # new creating predicates are not negative
         self.negative = False
     
@@ -65,20 +65,24 @@ class Predicate:
     def compatible(self, another:'Predicate')->bool:
         return len(self.columns & another.columns) == 0
     
-    def __str__(self, right_tuple_id:int = 1) -> str:
-        return self.__repr__(right_tuple_id)
+    def __str__(self, right_tuple_id:int = 1, escape:bool = False) -> str:
+        return self.__repr__(right_tuple_id, escape)
     
-    def __repr__(self, right_tuple_id:int = 1) -> str:
+    def __repr__(self, right_tuple_id:int = 1, escape:bool = False) -> str:
         if self.constant is None:
             return f"t0.{self.t0_col} {self.operator} t{right_tuple_id}.{self.t1_col}"
         else:
+            const_str = self.constant
+            if escape:
+                const_str = const_str.replace("\'", "\'\'")
+                const_str = const_str.replace("\"", "\"\"")
             if self.t1_col is None:
-                return f"t0.{self.t0_col} {self.operator} '{self.constant}'"
+                return f"t0.{self.t0_col} {self.operator} '{const_str}'"
             else:
-                return f"t{right_tuple_id}.{self.t1_col} {self.operator} '{self.constant}'"
+                return f"t{right_tuple_id}.{self.t1_col} {self.operator} '{const_str}'"
 
     def sql(self)->str:
-        return self.__repr__()
+        return self.__repr__(escape=True)
 
 Y = Predicate
 NegPred = Predicate
@@ -234,10 +238,12 @@ class RuleExecutor:
                 break
             future = pool.apply_async(_parallel_execute, (subRules, i, self.t0_len, self.t1_len))
             futures.append(future)
+        pool.close()
 
         results:List[Rule] = []
         for future in tqdm(futures, desc = "Parallel-Fetching"):
             results.extend(future.get())
+        pool.terminate()
 
         self.execute_time += time.time()
         self.sql_number += len(rules) * 2
