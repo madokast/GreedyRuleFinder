@@ -1,3 +1,8 @@
+"""
+2022年12月 挖掘全量规则
+采用 level-wise，挖掘第一层，然后所有 X 谓词作为下一层的 excluding
+"""
+
 import time
 from typing import Callable, Dict, List, Set, Tuple
 from rule import Predicate, Rule, RuleExecutor, Y, NegPred
@@ -25,7 +30,8 @@ def all_constant_predicates(table:pd.DataFrame, singleLine:bool, threshold:float
     return cps
 
 def first_generation(structual_predicates:List[Predicate] = [], constant_predicates:List[Tuple[Predicate]] = [], 
-        x_column:Callable[[str], bool] = lambda c:True, y_column:Callable[[str], bool] = lambda c:True)->List[Rule]:
+        x_column:Callable[[str], bool] = lambda c:True, y_column:Callable[[str], bool] = lambda c:True, 
+        constant_y_in_multi_rule:bool=False)->List[Rule]:
     rules:List[Rule] = []
     for y in structual_predicates:
         if not all((y_column(col) for col in y.columns)):
@@ -40,7 +46,10 @@ def first_generation(structual_predicates:List[Predicate] = [], constant_predica
         if not all((y_column(col) for col in y.columns)):
             continue
         if len(cp) == 2:
-            rules.append(Rule(Xs = [cp[0]], y = y))
+            if constant_y_in_multi_rule:
+                rules.append(Rule(Xs = [cp[0]], y = y))
+            else:
+                continue
         else:
             for xcp in constant_predicates:
                 x = xcp[0]
@@ -150,24 +159,24 @@ def rule_find(tables:Dict[str, pd.DataFrame], cover:float = 0.01, confidence:flo
 
 if __name__ == '__main__':
     start = time.time()
-    data = pd.read_csv(r"D:\work\20221104_规则发现查错效果分析\repy\data2\hospital\dirty_l.csv", dtype=str)
+    data = pd.read_csv(r"D:\work\20221104_规则发现查错效果分析\repy\data2\beers\dirty_l.csv", dtype=str)
     ignore_columns = ['id', 'aic', '_aic', 'index', '_index', 'row_id', 'source_data_id', 'last_update_time', 'batch_id', 'uuid', 'tuple_id']
 
 
-    all_found_rules = rule_find({"tax":data}, cover = 1e-10, confidence=1.0, constant_threshold=0.1, 
-        ignore_column=lambda c:c in ignore_columns, sql_thread_num=14, 
-        single_line=True, multi_line=False, greedy=True,
+    all_found_rules = rule_find({"flights":data}, cover = 1e-10, confidence=1.0, constant_threshold=1e-10, 
+        ignore_column=lambda c:c in ignore_columns, sql_thread_num=1, 
+        single_line=True, multi_line=True, greedy=True,
         x_column = lambda c:not c.startswith('_'),
         y_column = lambda c:c.startswith('_'),
     )
 
-    for rules in groupByKey(all_found_rules, lambda rule:rule.y).values():
-        if len(rules) > 0:
-            print(f"RHS: {rules[0].y}")
-        for rule in sorted(rules, key = lambda rule:rule.generation):
-            print("|---" * (rule.generation -1) + str(rule))
+    # for rules in groupByKey(all_found_rules, lambda rule:rule.y).values():
+    #     if len(rules) > 0:
+    #         print(f"RHS: {rules[0].y}")
+    #     for rule in sorted(rules, key = lambda rule:rule.generation):
+    #         print("|---" * (rule.generation -1) + str(rule))
 
     with open("rules.txt", mode = "bw") as f:
-        foreach(all_found_rules, lambda r:f.write((r.ree("tax")+'\r\n').encode('utf-8')))
+        foreach(all_found_rules, lambda r:f.write((r.ree("flights")+'\r\n').encode('utf-8')))
 
     print(f"Rules number {len(all_found_rules)} duration {time.time() - start}s")

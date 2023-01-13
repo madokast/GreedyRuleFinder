@@ -1,4 +1,4 @@
-from typing import List, Optional, Set
+from typing import List, Optional, Set, Callable, Optional
 import pandas as pd
 from tqdm import tqdm
 import sqlite3
@@ -62,8 +62,11 @@ class Predicate:
         return hash(str(self))
 
 
-    def compatible(self, another:'Predicate')->bool:
-        return len(self.columns & another.columns) == 0
+    def compatible(self, *anothers:'Predicate')->bool:
+        for another in anothers:
+            if len(self.columns & another.columns) != 0:
+                return False
+        return True
     
     def __str__(self, right_tuple_id:int = 1, escape:bool = False) -> str:
         return self.__repr__(right_tuple_id, escape)
@@ -140,8 +143,13 @@ class Rule:
     def confidence(self)->float:
         return 0. if self.xSupp == 0 else self.supp/self.xSupp
 
-    def ok(self, cover:float = 0.1, confidence:float = 0.8)->bool:
-        return self.cover() >= cover and self.confidence() >= confidence
+    def ok(self, cover:float = 0.1, confidence:float = 0.8, action:Optional[Callable[['Rule'], None]]=None)->bool:
+        if self.cover() >= cover and self.confidence() >= confidence:
+            if action is not None:
+                action(self)
+            return True
+        else:
+            return False
     
     def reproducible(self, cover:float = 0.1)->bool:
         return self.cover() >= cover
@@ -149,24 +157,25 @@ class Rule:
     def suppSQL(self)->str:
         return self.xSuppSQL() + " AND " + self.y.sql()
     
-    def __str__(self, right_tuple_id:int = 1) -> str:
-        return self.__repr__(right_tuple_id)
+    def __str__(self, right_tuple_id:int = 1, statistics:bool=True) -> str:
+        return self.__repr__(right_tuple_id, statistics=statistics)
 
-    def __repr__(self, right_tuple_id:int = 1) -> str:
+    def __repr__(self, right_tuple_id:int = 1, statistics:bool=True) -> str:
         xs = " ^ ".join((p.__str__(right_tuple_id) for p in self.Xs))
         cover = round(self.cover(), 2)
         conf = round(self.confidence(), 2)
-        return f"{xs} -> {self.y.__str__(right_tuple_id)}, rowSize={self.rowSize}, xSupp={self.xSupp}, supp={self.supp}, covre={cover}, conf={conf}"
+        statistics_info = f", rowSz={self.rowSize}, xSup={self.xSupp}, sup={self.supp}, cr={cover}, cf={conf}" if statistics else ""
+        return f"{xs} -> {self.y.__str__(right_tuple_id)}{statistics_info}"
 
-    def ree(self, t0_tab:str, t1_tab:Optional[str] = None)->str:
+    def ree(self, t0_tab:str, t1_tab:Optional[str] = None, statistics:bool = True)->str:
         if t1_tab is None:
             t1_tab = t0_tab
         
         if self.singleLine():
-            return f"{t0_tab}(t0) ^ {self}"
+            return f"{t0_tab}(t0) ^ {self.__str__(statistics = statistics)}"
         else:
             right_tuple_id = 1 if t0_tab == t1_tab else 2
-            return f"{t0_tab}(t0) ^ {t1_tab}(t{right_tuple_id}) ^ {self.__str__(right_tuple_id)}"
+            return f"{t0_tab}(t0) ^ {t1_tab}(t{right_tuple_id}) ^ {self.__str__(right_tuple_id, statistics=statistics)}"
 
 class RuleExecutor:
     SQLITE3_TEMP_FILE = 'sqlite3.db'
